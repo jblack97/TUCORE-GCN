@@ -55,7 +55,7 @@ class BertConfig(object):
                 hidden_dropout_prob=0.1,
                 attention_probs_dropout_prob=0.1,
                 max_position_embeddings=512,
-                type_vocab_size=16,
+                type_vocab_size=2,
                 initializer_range=0.02):
         """Constructs BertConfig.
 
@@ -141,7 +141,7 @@ class BERTEmbeddings(nn.Module):
         self.word_embeddings = nn.Embedding(config.vocab_size, config.hidden_size)
         self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
         self.token_type_embeddings = nn.Embedding(config.type_vocab_size, config.hidden_size)
-        self.speaker_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
+        self.speaker_embeddings = nn.Embedding(16, config.hidden_size)
 
         # self.LayerNorm is not snake-cased to stick with TensorFlow model variable name and be able to load
         # any TensorFlow checkpoint file
