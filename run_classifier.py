@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # coding=utf-8
 # Copyright 2018 The Google AI Language Team Authors and The HugginFace Inc. team.
 #
