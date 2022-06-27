@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 
 emotions = {"Sad": 1, "Mad": 2, "Scared": 3, "Powerful": 4, "Peaceful": 5, "Joyful": 6, "Neutral": 7}
