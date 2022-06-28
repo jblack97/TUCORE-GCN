@@ -382,7 +382,8 @@ def main():
 
     
     args = parser.parse_args()
-
+    print(args)
+    return 
     if args.data_name not in n_classes:
         raise ValueError("Data not found: %s" % (args.data_name))
     
