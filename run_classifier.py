@@ -23,8 +23,8 @@ import logging
 import argparse
 import random
 import pickle
-from tqdm import tqdm, trange
-
+#from tqdm import tqdm, trange
+from tqdm.notebook import tqdm
 import numpy as np
 import torch
 
