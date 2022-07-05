@@ -29,6 +29,7 @@ import numpy as np
 import torch
 
 from models.BERT import tokenization
+from models.BERT.BERT import BertConfig, BertModel
 from models.BERT.TUCOREGCN_BERT import BertConfig, TUCOREGCN_BERT
 
 from models.RoBERTa.tokenization_roberta import RobertaTokenizer
@@ -418,7 +419,7 @@ def main():
     if not args.do_train and not args.do_eval:
         raise ValueError("At least one of `do_train` or `do_eval` must be True.")
     
-    if args.encoder_type == "BERT":
+    if args.encoder_type in ["TUCOREGCN_BERT", "BERT"]:
         config = BertConfig.from_json_file(args.config_file)
     elif args.encoder_type == "RoBERTa":
         config = RobertaConfig.from_json_file(args.config_file)
@@ -436,7 +437,7 @@ def main():
     else:
         os.makedirs(args.output_dir, exist_ok=True)
     
-    if args.encoder_type == "BERT":
+    if args.encoder_type in ["TUCOREGCN_BERT", "BERT"]:
         tokenizer = tokenization.FullTokenizer(vocab_file=args.vocab_file, do_lower_case=args.do_lower_case)
     elif args.encoder_type == "RoBERTa" and args.merges_file:
         tokenizer = RobertaTokenizer(vocab_file=args.vocab_file, merges_file=args.merges_file)
@@ -453,8 +454,13 @@ def main():
             len(train_set) / args.train_batch_size / args.gradient_accumulation_steps * args.num_train_epochs)
         train_loader = TUCOREGCNDataloader(dataset=train_set, batch_size=args.train_batch_size, shuffle=True, relation_num=n_class, max_length=args.max_seq_length)
     
-    if args.encoder_type == "BERT":
+    if args.encoder_type == "TUCOREGCN_BERT":
         model = TUCOREGCN_BERT(config, n_class)
+        if args.init_checkpoint is not None:
+            model.bert.load_state_dict(torch.load(args.init_checkpoint, map_location='cpu'), strict=False)
+    
+    elif args.encoder_type == "BERT":
+        model = BertModel(config, n_class)
         if args.init_checkpoint is not None:
             model.bert.load_state_dict(torch.load(args.init_checkpoint, map_location='cpu'), strict=False)
     else:
