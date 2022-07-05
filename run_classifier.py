@@ -513,7 +513,7 @@ def main():
             model.train()
             tr_loss = 0
             nb_tr_examples, nb_tr_steps = 0, 0
-            for step, batch in enumerate(tqdm(train_loader, desc="Iteration")):
+            for step, batch in enumerate(train_loader):
                 if step > args.max_examples:
                    break
                 input_ids = batch['input_ids'].to(device)
